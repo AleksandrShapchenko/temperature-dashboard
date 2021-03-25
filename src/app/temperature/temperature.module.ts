@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { TemperaturePageComponent } from './temperature-page/temperature-page.component';
 
 
-
 @NgModule({
   declarations: [TemperaturePageComponent],
+  exports: [
+    TemperaturePageComponent
+  ],
   imports: [
     CommonModule
   ]

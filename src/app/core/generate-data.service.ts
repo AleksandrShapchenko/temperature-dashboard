@@ -8,9 +8,11 @@ export class GenerateDataService {
   private airPressure = 0;
 
   private generateTemperature = new CustomEvent('generateTemper', {
-    detail: this.temperature = Math.random() < 0.5
-      ? this.temperature += Math.floor(Math.random() * 2)
-      : this.temperature -= Math.floor(Math.random() * 2)
+    detail: {
+      temperature: this.temperature = Math.random() < 0.5
+        ? this.temperature += Math.floor(Math.random() * 2)
+        : this.temperature -= Math.floor(Math.random() * 2)
+    }
   });
   private generateHumidity = new CustomEvent('generateHumidity', {
     detail: this.humidity = Math.random() < 0.5
@@ -27,9 +29,12 @@ export class GenerateDataService {
   constructor() { }
 
   currentTemperature = new Observable(subscriber => {
+    let randomInterval = 0;
     setInterval(() => {
-      subscriber.next(document.dispatchEvent(this.generateTemperature));
-    }, 100 + Math.random() * 1900);
+      randomInterval = 100 + Math.random() * 1900;
+      document.dispatchEvent(this.generateTemperature);
+      subscriber.next(randomInterval);
+    }, randomInterval);
   });
   currentHumidity = new Observable(subscriber => {
     setInterval(() => {
