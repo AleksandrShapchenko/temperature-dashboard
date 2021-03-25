@@ -6,7 +6,6 @@ import {GenerateDataService} from './generate-data.service';
 import {throwIfAlreadyLoaded} from './module-import-guard';
 
 
-
 @NgModule({
   declarations: [],
   imports: [
