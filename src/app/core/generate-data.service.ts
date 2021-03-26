@@ -1,49 +1,42 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {interval} from 'rxjs';
 
 @Injectable()
 export class GenerateDataService {
-  private temperature = 0;
-  private humidity = 0;
-  private airPressure = 0;
+  temperature = 9;
+  humidity = 40;
+  airPressure = 10;
 
-  private generateTemperature = new CustomEvent('generateTemper', {
-    detail: {
-      temperature: this.temperature = Math.random() < 0.5
-        ? this.temperature += Math.floor(Math.random() * 2)
-        : this.temperature -= Math.floor(Math.random() * 2)
-    }
-  });
-  private generateHumidity = new CustomEvent('generateHumidity', {
-    detail: this.humidity = Math.random() < 0.5
-      ? this.humidity += Math.floor(Math.random() * 2)
-      : this.humidity -= Math.floor(Math.random() * 2)
-  });
-  private generateAirPressure = new CustomEvent('generateAirPressure', {
-    detail: this.airPressure = Math.random() < 0.5
-      ? this.airPressure += Math.floor(Math.random() * 2)
-      : this.airPressure -= Math.floor(Math.random() * 2)
-  });
+  private generateTemperature = new CustomEvent('generateTemperature');
+  private generateHumidity = new CustomEvent('generateHumidity');
+  private generateAirPressure = new CustomEvent('generateAirPressure');
 
 
-  constructor() { }
+  constructor() {
+  }
 
-  currentTemperature = new Observable(subscriber => {
-    let randomInterval = 0;
-    setInterval(() => {
-      randomInterval = 100 + Math.random() * 1900;
-      document.dispatchEvent(this.generateTemperature);
-      subscriber.next(randomInterval);
-    }, randomInterval);
+  temperatureIntervalStream$ = interval(2000);
+  humidityIntervalStream$ = interval(2000);
+  airPressureIntervalStream$ = interval(2000);
+
+  temperatureIntervalSubscribtion = this.temperatureIntervalStream$.subscribe((value) => {
+    this.temperature = Math.random() < 0.5
+      ? this.temperature += Math.round(Math.random() * 2)
+      : this.temperature -= Math.round(Math.random() * 2);
+    console.log('step: ', value);
+    console.log('temperature: ', this.temperature);
+    document.dispatchEvent(this.generateTemperature);
   });
-  currentHumidity = new Observable(subscriber => {
-    setInterval(() => {
-      subscriber.next(document.dispatchEvent(this.generateHumidity));
-    }, 100 + Math.random() * 1900);
+  humidityIntervalSubscribtion = this.humidityIntervalStream$.subscribe((value) => {
+    this.humidity = Math.random() < 0.5
+      ? this.humidity += Math.round(Math.random() * 2)
+      : this.humidity -= Math.round(Math.random() * 2);
+    document.dispatchEvent(this.generateHumidity);
   });
-  currentAirPressure = new Observable(subscriber => {
-    setInterval(() => {
-      subscriber.next(document.dispatchEvent(this.generateAirPressure));
-    }, 100 + Math.random() * 1900);
+  airPressureIntervalSubscribtion = this.airPressureIntervalStream$.subscribe((value) => {
+    this.airPressure = Math.random() < 0.5
+      ? this.airPressure += Math.round(Math.random() * 2)
+      : this.airPressure -= Math.round(Math.random() * 2);
+    document.dispatchEvent(this.generateAirPressure);
   });
 }
