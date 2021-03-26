@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GenerateDataService} from '../../core/generate-data.service';
+import {fromEvent} from 'rxjs';
 
 @Component({
   selector: 'app-temperature-page',
@@ -11,40 +12,17 @@ export class TemperaturePageComponent implements OnInit {
   humidity: number | string | undefined;
   airPressure: number | string | undefined;
 
-  temperatureObserver = {
-    next: (temperature: number): void => {
-      console.log(temperature);
-      // this.temperature = interval <= 1000
-      //   ? temperature
-      //   : 'N/A';
-    },
-  };
-
-  humidityObserver = {
-    next: (humidity: number, interval: number) => {
-      this.humidity = interval <= 1000
-        ? humidity
-        : 'N/A';
-    }
-  };
-
-  airPressureObserver = {
-    next: (airPressure: number, interval: number) => {
-      this.airPressure = interval <= 1000
-        ? airPressure
-        : 'N/A';
-    }
-  };
   constructor(private dataService: GenerateDataService) { }
 
   ngOnInit(): void {
-    // @ts-ignore
-    const stream = this.dataService.currentTemperature.subscribe(this.temperatureObserver);
-
-    setTimeout(() => {
-      stream.unsubscribe();
-    }, 10000);
+    const temperatureEventStream$ = fromEvent(document, 'generateTemperature').subscribe(e => {
+      this.temperature = this.dataService.temperature;
+    });
+    const humidityEventStream$ = fromEvent(document, 'generateHumidity').subscribe(e => {
+      this.humidity = this.dataService.humidity;
+    });
+    const airPressureEventStream$ = fromEvent(document, 'generateAirPressure').subscribe(e => {
+      this.airPressure = this.dataService.airPressure;
+    });
   }
-
-
 }
