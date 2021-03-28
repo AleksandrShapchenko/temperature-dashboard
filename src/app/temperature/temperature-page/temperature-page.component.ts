@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GenerateDataService} from '../../core/generate-data.service';
 import {fromEvent} from 'rxjs';
 
@@ -12,17 +12,32 @@ export class TemperaturePageComponent implements OnInit {
   humidity: number | string | undefined;
   airPressure: number | string | undefined;
 
-  constructor(private dataService: GenerateDataService) { }
+  constructor(private dataService: GenerateDataService) {
+  }
 
   ngOnInit(): void {
+    const maxEventDelay = 1000;
+    let temperaturePreviousEventTime = Date.now();
+    let humidityPreviousEventTime = Date.now();
+    let airPressurePreviousEventTime = Date.now();
+
     const temperatureEventStream$ = fromEvent(document, 'generateTemperature').subscribe(e => {
-      this.temperature = this.dataService.temperature;
+      this.temperature = Date.now() - temperaturePreviousEventTime > maxEventDelay
+        ? 'N/A'
+        : this.dataService.temperature;
+      temperaturePreviousEventTime = Date.now();
     });
     const humidityEventStream$ = fromEvent(document, 'generateHumidity').subscribe(e => {
-      this.humidity = this.dataService.humidity;
+      this.humidity = Date.now() - humidityPreviousEventTime > maxEventDelay
+        ? 'N/A'
+        : this.dataService.humidity;
+      humidityPreviousEventTime = Date.now();
     });
     const airPressureEventStream$ = fromEvent(document, 'generateAirPressure').subscribe(e => {
-      this.airPressure = this.dataService.airPressure;
+      this.airPressure = Date.now() - airPressurePreviousEventTime > maxEventDelay
+        ? 'N/A'
+        : this.dataService.airPressure;
+      airPressurePreviousEventTime = Date.now();
     });
   }
 }
