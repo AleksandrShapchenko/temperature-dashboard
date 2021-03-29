@@ -21,19 +21,25 @@ export class TemperaturePageComponent implements OnInit {
     let humidityPreviousEventTime = Date.now();
     let airPressurePreviousEventTime = Date.now();
 
-    const temperatureEventStream$ = fromEvent(document, 'generateTemperature').subscribe(e => {
+    const temperatureEventStream$ = fromEvent(document, 'generateTemperature');
+    const humidityEventStream$ = fromEvent(document, 'generateHumidity');
+    const airPressureEventStream$ = fromEvent(document, 'generateAirPressure');
+
+    const temperatureEventSubscribtion$ = temperatureEventStream$.subscribe(e => {
       this.temperature = Date.now() - temperaturePreviousEventTime > maxEventDelay
         ? 'N/A'
         : this.dataService.temperature;
       temperaturePreviousEventTime = Date.now();
     });
-    const humidityEventStream$ = fromEvent(document, 'generateHumidity').subscribe(e => {
+
+    const humidityEventSubscription$ = humidityEventStream$.subscribe(e => {
       this.humidity = Date.now() - humidityPreviousEventTime > maxEventDelay
         ? 'N/A'
         : this.dataService.humidity;
       humidityPreviousEventTime = Date.now();
     });
-    const airPressureEventStream$ = fromEvent(document, 'generateAirPressure').subscribe(e => {
+
+    const airPressureEventSubscription$ = airPressureEventStream$.subscribe(e => {
       this.airPressure = Date.now() - airPressurePreviousEventTime > maxEventDelay
         ? 'N/A'
         : this.dataService.airPressure;
