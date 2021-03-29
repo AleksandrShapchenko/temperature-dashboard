@@ -8,9 +8,9 @@ import {fromEvent} from 'rxjs';
   styleUrls: ['./temperature-page.component.less']
 })
 export class TemperaturePageComponent implements OnInit {
-  temperature: number | string | undefined;
-  humidity: number | string | undefined;
-  airPressure: number | string | undefined;
+  temperature: number | string = 'N/A';
+  humidity: number | string = 'N/A';
+  airPressure: number | string = 'N/A';
 
   constructor(private dataService: GenerateDataService) {
   }
@@ -25,22 +25,25 @@ export class TemperaturePageComponent implements OnInit {
     const humidityEventStream$ = fromEvent(document, 'generateHumidity');
     const airPressureEventStream$ = fromEvent(document, 'generateAirPressure');
 
-    const temperatureEventSubscribtion$ = temperatureEventStream$.subscribe(e => {
-      this.temperature = Date.now() - temperaturePreviousEventTime > maxEventDelay
+    const temperatureEventSubscribtion = temperatureEventStream$.subscribe(e => {
+      const delayFromPreviousEvent = Date.now() - airPressurePreviousEventTime;
+      this.temperature = delayFromPreviousEvent > maxEventDelay
         ? 'N/A'
         : this.dataService.temperature;
       temperaturePreviousEventTime = Date.now();
     });
 
-    const humidityEventSubscription$ = humidityEventStream$.subscribe(e => {
-      this.humidity = Date.now() - humidityPreviousEventTime > maxEventDelay
+    const humidityEventSubscription = humidityEventStream$.subscribe(e => {
+      const delayFromPreviousEvent = Date.now() - airPressurePreviousEventTime;
+      this.humidity = delayFromPreviousEvent > maxEventDelay
         ? 'N/A'
         : this.dataService.humidity;
       humidityPreviousEventTime = Date.now();
     });
 
-    const airPressureEventSubscription$ = airPressureEventStream$.subscribe(e => {
-      this.airPressure = Date.now() - airPressurePreviousEventTime > maxEventDelay
+    const airPressureEventSubscription = airPressureEventStream$.subscribe(e => {
+      const delayFromPreviousEvent = Date.now() - airPressurePreviousEventTime;
+      this.airPressure = delayFromPreviousEvent > maxEventDelay
         ? 'N/A'
         : this.dataService.airPressure;
       airPressurePreviousEventTime = Date.now();
