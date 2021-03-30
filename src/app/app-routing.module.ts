@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {TemperatureComponent} from './temperature/temperature/temperature.component';
+import { TemperatureComponent } from './temperature/temperature/temperature.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'whether',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'whether',
-    component: TemperatureComponent
-  }
+    component: TemperatureComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

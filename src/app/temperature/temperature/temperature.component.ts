@@ -1,79 +1,107 @@
-import {Component, OnInit} from '@angular/core';
-import {GenerateDataService} from '../../core/generate-data.service';
-import {fromEvent, merge} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { fromEvent, merge, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { DisplayObject } from '../../shared/models/display-object';
 
 @Component({
   selector: 'app-temperature',
   templateUrl: './temperature.component.html',
-  styleUrls: ['./temperature.component.less']
+  styleUrls: ['./temperature.component.less'],
 })
 export class TemperatureComponent implements OnInit {
+  public constructor() {}
 
-  constructor(private dataService: GenerateDataService) {
-  }
-
-  ngOnInit(): void {
-    const maxEventDelay = 1000;
-    const minEmitDelay = 100;
-    let temperaturePreviousEventTime = Date.now();
-    let humidityPreviousEventTime = Date.now();
-    let airPressurePreviousEventTime = Date.now();
-    let previousEmitTime = Date.now();
+  public ngOnInit(): void {
+    const maxEventDelay: number = 1000;
+    const minEmitDelay: number = 100;
+    let temperaturePreviousEventTime: number = Date.now();
+    let humidityPreviousEventTime: number = Date.now();
+    let airPressurePreviousEventTime: number = Date.now();
+    let previousEmitTime: number = Date.now();
 
     let lastTimeTemperature: number | string;
     let lastTimeHumidity: number | string;
     let lastTimeAirPressure: number | string;
 
-    const temperatureEventStream = fromEvent(document, 'generateTemperature');
-    const humidityEventStream = fromEvent(document, 'generateHumidity');
-    const airPressureEventStream = fromEvent(document, 'generateAirPressure');
-
-    const whetherDataEventsStream = merge(
-      temperatureEventStream.pipe(map(e => {
-        const delayFromPreviousEvent = Date.now() - temperaturePreviousEventTime;
-        const currentTemperature = delayFromPreviousEvent > maxEventDelay
-          ? 'N/A'
-          : (e as CustomEvent).detail.temperature;
-        temperaturePreviousEventTime = Date.now();
-        return {
-          temperature: currentTemperature,
-          humidity: lastTimeHumidity,
-          airPressure: lastTimeAirPressure
-        };
-      })),
-
-
-      humidityEventStream.pipe(map(e => {
-        const delayFromPreviousEvent = Date.now() - humidityPreviousEventTime;
-        const currentHumidity = delayFromPreviousEvent > maxEventDelay
-          ? 'N/A'
-          : (e as CustomEvent).detail.humidity;
-        humidityPreviousEventTime = Date.now();
-        return {
-          temperature: lastTimeTemperature,
-          humidity: currentHumidity,
-          airPressure: lastTimeAirPressure
-        };
-      })),
-
-      airPressureEventStream.pipe(map(e => {
-        const delayFromPreviousEvent = Date.now() - airPressurePreviousEventTime;
-        const currentAirPressure = delayFromPreviousEvent > maxEventDelay
-          ? 'N/A'
-          : (e as CustomEvent).detail.airPressure;
-        airPressurePreviousEventTime = Date.now();
-        return {
-          temperature: lastTimeTemperature,
-          humidity: lastTimeHumidity,
-          airPressure: currentAirPressure
-        };
-      })),
+    const temperatureEventStream: Observable<Event> = fromEvent(
+      document,
+      'generateTemperature'
+    );
+    const humidityEventStream: Observable<Event> = fromEvent(
+      document,
+      'generateHumidity'
+    );
+    const airPressureEventStream: Observable<Event> = fromEvent(
+      document,
+      'generateAirPressure'
     );
 
-    whetherDataEventsStream.subscribe(data => {
-      const moreThanMinEmitDelay = Date.now() - previousEmitTime > minEmitDelay;
+    const whetherDataEventsStream: Observable<DisplayObject> = merge(
+      temperatureEventStream.pipe(
+        map(
+          (e: Event): DisplayObject => {
+            const delayFromPreviousEvent: number =
+              Date.now() - temperaturePreviousEventTime;
+            const currentTemperature: number | string =
+              delayFromPreviousEvent > maxEventDelay
+                ? 'N/A'
+                : (e as CustomEvent).detail.temperature;
+            temperaturePreviousEventTime = Date.now();
 
+            return {
+              temperature: currentTemperature,
+              humidity: lastTimeHumidity,
+              airPressure: lastTimeAirPressure,
+            };
+          }
+        )
+      ),
+
+      humidityEventStream.pipe(
+        map(
+          (e: Event): DisplayObject => {
+            const delayFromPreviousEvent: number =
+              Date.now() - humidityPreviousEventTime;
+            const currentHumidity: number | string =
+              delayFromPreviousEvent > maxEventDelay
+                ? 'N/A'
+                : (e as CustomEvent).detail.humidity;
+            humidityPreviousEventTime = Date.now();
+
+            return {
+              temperature: lastTimeTemperature,
+              humidity: currentHumidity,
+              airPressure: lastTimeAirPressure,
+            };
+          }
+        )
+      ),
+
+      airPressureEventStream.pipe(
+        map(
+          (e: Event): DisplayObject => {
+            const delayFromPreviousEvent: number =
+              Date.now() - airPressurePreviousEventTime;
+            const currentAirPressure: number | string =
+              delayFromPreviousEvent > maxEventDelay
+                ? 'N/A'
+                : (e as CustomEvent).detail.airPressure;
+            airPressurePreviousEventTime = Date.now();
+
+            return {
+              temperature: lastTimeTemperature,
+              humidity: lastTimeHumidity,
+              airPressure: currentAirPressure,
+            };
+          }
+        )
+      )
+    );
+
+    whetherDataEventsStream.subscribe((data: DisplayObject): void => {
+      const moreThanMinEmitDelay: boolean =
+        Date.now() - previousEmitTime > minEmitDelay;
       if (moreThanMinEmitDelay) {
         previousEmitTime = Date.now();
         lastTimeTemperature = data.temperature;
@@ -81,7 +109,10 @@ export class TemperatureComponent implements OnInit {
         lastTimeAirPressure = data.airPressure;
         console.log('from subscription: ', data);
       } else {
-        console.log('less than minEmitDelay(100ms)', Date.now() - previousEmitTime);
+        console.log(
+          'less than minEmitDelay(100ms)',
+          Date.now() - previousEmitTime
+        );
       }
     });
   }
