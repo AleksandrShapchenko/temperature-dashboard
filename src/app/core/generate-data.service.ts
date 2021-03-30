@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Canceller} from '../shared/models/canceller';
-import set = Reflect.set;
 
 @Injectable()
 export class GenerateDataService {
@@ -8,13 +7,25 @@ export class GenerateDataService {
   constructor() {
   }
 
-  temperature = 9;
-  humidity = 40;
-  airPressure = 10;
+  public temperature = 9;
+  public humidity = 40;
+  public airPressure = 10;
 
-  private generateTemperatureEvent = new CustomEvent('generateTemperature');
-  private generateHumidityEvent = new CustomEvent('generateHumidity');
-  private generateAirPressureEvent = new CustomEvent('generateAirPressure');
+  private generateTemperatureEvent = new CustomEvent('generateTemperature', {
+    detail: {
+      temperature: this.temperature
+    }
+  });
+  private generateHumidityEvent = new CustomEvent('generateHumidity', {
+    detail: {
+      humidity: this.humidity
+    }
+  });
+  private generateAirPressureEvent = new CustomEvent('generateAirPressure', {
+    detail: {
+      airPressure: this.airPressure
+    }
+  });
 
   private generateTemperature = () => {
     this.temperature = Math.random() < 0.5
@@ -35,24 +46,18 @@ export class GenerateDataService {
     document.dispatchEvent(this.generateAirPressureEvent);
   }
 
-  planAhead(callback: () => void): Canceller {
-    let work = true;
-    setTimeout(() => {
+  private planAhead(callback: () => void): Canceller {
+    const timeout = setTimeout(() => {
       callback();
-      if (work) {
-        this.planAhead(callback);
-      }
+      this.planAhead(callback);
     }, 100 + Math.random() * 1900);
 
     return function canceller(): void {
-      work = false;
+      clearTimeout(timeout);
     };
   }
 
-
-
-  temperatureStream = this.planAhead(this.generateTemperature);
-  humidityStream = this.planAhead(this.generateHumidity);
-  airPressureStream = this.planAhead(this.generateAirPressure);
-
+  public temperatureStream = this.planAhead(this.generateTemperature);
+  public humidityStream = this.planAhead(this.generateHumidity);
+  public airPressureStream = this.planAhead(this.generateAirPressure);
 }

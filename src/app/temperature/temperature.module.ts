@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TemperaturePageComponent } from './temperature-page/temperature-page.component';
+import { TemperatureComponent } from './temperature/temperature.component';
 
 
 @NgModule({
-  declarations: [TemperaturePageComponent],
+  declarations: [TemperatureComponent],
   exports: [
-    TemperaturePageComponent
+    TemperatureComponent
   ],
   imports: [
     CommonModule
