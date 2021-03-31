@@ -115,7 +115,6 @@ export class TemperatureComponent implements OnInit {
         lastTimeTemperature = data.temperature;
         lastTimeHumidity = data.humidity;
         lastTimeAirPressure = data.airPressure;
-        console.log(lastTimeAirPressure, lastTimeHumidity, lastTimeTemperature);
         if (
           lastTimeTemperature !== undefined &&
           lastTimeHumidity !== undefined &&
@@ -124,11 +123,6 @@ export class TemperatureComponent implements OnInit {
           this.isFormed = true;
           this.displayObject = data;
         }
-      } else {
-        console.log(
-          'less than minEmitDelay(100ms)',
-          Date.now() - previousEmitTime
-        );
       }
     });
   }
