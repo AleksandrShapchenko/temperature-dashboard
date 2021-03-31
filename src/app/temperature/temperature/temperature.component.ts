@@ -3,6 +3,7 @@ import { fromEvent, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
+import { GenerateDataService } from '../../core/generate-data.service';
 
 @Component({
   selector: 'app-temperature',
@@ -10,7 +11,14 @@ import { DisplayObject } from '../../shared/models/display-object';
   styleUrls: ['./temperature.component.less'],
 })
 export class TemperatureComponent implements OnInit {
-  public constructor() {}
+  public isFormed: boolean = false;
+  public displayObject: DisplayObject = {
+    temperature: undefined,
+    humidity: undefined,
+    airPressure: undefined,
+  };
+
+  public constructor(private dataService: GenerateDataService) {}
 
   public ngOnInit(): void {
     const maxEventDelay: number = 1000;
@@ -20,9 +28,9 @@ export class TemperatureComponent implements OnInit {
     let airPressurePreviousEventTime: number = Date.now();
     let previousEmitTime: number = Date.now();
 
-    let lastTimeTemperature: number | string;
-    let lastTimeHumidity: number | string;
-    let lastTimeAirPressure: number | string;
+    let lastTimeTemperature: number | string | undefined;
+    let lastTimeHumidity: number | string | undefined;
+    let lastTimeAirPressure: number | string | undefined;
 
     const temperatureEventStream: Observable<Event> = fromEvent(
       document,
@@ -107,7 +115,15 @@ export class TemperatureComponent implements OnInit {
         lastTimeTemperature = data.temperature;
         lastTimeHumidity = data.humidity;
         lastTimeAirPressure = data.airPressure;
-        console.log('from subscription: ', data);
+        console.log(lastTimeAirPressure, lastTimeHumidity, lastTimeTemperature);
+        if (
+          lastTimeTemperature !== undefined &&
+          lastTimeHumidity !== undefined &&
+          lastTimeAirPressure !== undefined
+        ) {
+          this.isFormed = true;
+          this.displayObject = data;
+        }
       } else {
         console.log(
           'less than minEmitDelay(100ms)',

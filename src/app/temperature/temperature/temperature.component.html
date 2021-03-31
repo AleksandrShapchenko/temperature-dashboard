@@ -1,3 +1,5 @@
-<div id="temperature">Температура: °C</div>
-<div id="humidity">Влажность: %</div>
-<div id="airPressure">Ветер: км/час</div>
+<div *ngIf="isFormed">
+  <p>Температура: {{displayObject.temperature}}°C </p>
+  <p>Влажность: {{displayObject.humidity}}% </p>
+  <p> Ветер: {{displayObject.airPressure}}км/час</p>
+</div>

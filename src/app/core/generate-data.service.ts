@@ -8,32 +8,6 @@ export class GenerateDataService {
   public humidity: number = 40;
   public temperature: number = 9;
 
-  private generateAirPressureEvent: CustomEvent = new CustomEvent(
-    'generateAirPressure',
-    {
-      detail: {
-        airPressure: this.airPressure,
-      },
-    }
-  );
-  private generateHumidityEvent: CustomEvent = new CustomEvent(
-    'generateHumidity',
-    {
-      detail: {
-        humidity: this.humidity,
-      },
-    }
-  );
-
-  private generateTemperatureEvent: CustomEvent = new CustomEvent(
-    'generateTemperature',
-    {
-      detail: {
-        temperature: this.temperature,
-      },
-    }
-  );
-
   public constructor() {}
 
   private generateAirPressure = (): void => {
@@ -42,7 +16,13 @@ export class GenerateDataService {
     this.airPressure = positive
       ? (this.airPressure += Math.round(Math.random()))
       : (this.airPressure -= Math.round(Math.random()));
-    document.dispatchEvent(this.generateAirPressureEvent);
+    document.dispatchEvent(
+      new CustomEvent('generateAirPressure', {
+        detail: {
+          airPressure: this.airPressure,
+        },
+      })
+    );
   };
   private generateHumidity = (): void => {
     const half: number = 0.5;
@@ -50,7 +30,13 @@ export class GenerateDataService {
     this.humidity = positive
       ? (this.humidity += Math.round(Math.random()))
       : (this.humidity -= Math.round(Math.random()));
-    document.dispatchEvent(this.generateHumidityEvent);
+    document.dispatchEvent(
+      new CustomEvent('generateHumidity', {
+        detail: {
+          humidity: this.humidity,
+        },
+      })
+    );
   };
 
   private generateTemperature = (): void => {
@@ -59,7 +45,13 @@ export class GenerateDataService {
     this.temperature = positive
       ? (this.temperature += Math.round(Math.random()))
       : (this.temperature -= Math.round(Math.random()));
-    document.dispatchEvent(this.generateTemperatureEvent);
+    document.dispatchEvent(
+      new CustomEvent('generateTemperature', {
+        detail: {
+          temperature: this.temperature,
+        },
+      })
+    );
   };
 
   private planAhead(callback: () => void): Canceller {
@@ -67,7 +59,6 @@ export class GenerateDataService {
     const maxDuration: number = 1900;
     const timeout: ReturnType<typeof setTimeout> = setTimeout((): void => {
       callback();
-      console.log('planAhead');
       this.planAhead(callback);
     }, minDuration + Math.random() * maxDuration);
 

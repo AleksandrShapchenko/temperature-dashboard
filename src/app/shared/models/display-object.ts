@@ -1,5 +1,5 @@
 export interface DisplayObject {
-  airPressure: number | string;
-  humidity: number | string;
-  temperature: number | string;
+  airPressure: number | string | undefined;
+  humidity: number | string | undefined;
+  temperature: number | string | undefined;
 }
