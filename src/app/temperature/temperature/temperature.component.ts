@@ -19,62 +19,62 @@ export class TemperatureComponent implements OnInit {
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
 
-    const temperatureEventStream: Observable<Event> = fromEvent(
+    const temperatureEventStream: Observable<CustomEvent> = fromEvent<CustomEvent>(
       document,
       'generateTemperature'
     );
-    const humidityEventStream: Observable<Event> = fromEvent(
+    const humidityEventStream: Observable<CustomEvent> = fromEvent<CustomEvent>(
       document,
       'generateHumidity'
     );
-    const airPressureEventStream: Observable<Event> = fromEvent(
+    const airPressureEventStream: Observable<CustomEvent> = fromEvent<CustomEvent>(
       document,
       'generateAirPressure'
     );
 
     this.displayObject = combineLatest([
       temperatureEventStream.pipe(
-        pairwise(),
-        map((eventPair: Event[]): string | number => {
+        pairwise<CustomEvent>(),
+        map((eventPair: CustomEvent[]): string | number => {
           const maxEventDelay: number = 1000;
-          const previousEvent: Event = eventPair[0];
-          const currentEvent: Event = eventPair[1];
+          const previousEvent: CustomEvent = eventPair[0];
+          const currentEvent: CustomEvent = eventPair[1];
           const delayFromPreviousEvent: number =
             currentEvent.timeStamp - previousEvent.timeStamp;
 
           return delayFromPreviousEvent > maxEventDelay
             ? 'N/A'
-            : (currentEvent as CustomEvent).detail.temperature;
+            : currentEvent.detail.temperature;
         })
       ),
 
       humidityEventStream.pipe(
         pairwise(),
-        map((eventPair: Event[]): string | number => {
+        map((eventPair: CustomEvent[]): string | number => {
           const maxEventDelay: number = 1000;
-          const previousEvent: Event = eventPair[0];
-          const currentEvent: Event = eventPair[1];
+          const previousEvent: CustomEvent = eventPair[0];
+          const currentEvent: CustomEvent = eventPair[1];
           const delayFromPreviousEvent: number =
             currentEvent.timeStamp - previousEvent.timeStamp;
 
           return delayFromPreviousEvent > maxEventDelay
             ? 'N/A'
-            : (currentEvent as CustomEvent).detail.humidity;
+            : currentEvent.detail.humidity;
         })
       ),
 
       airPressureEventStream.pipe(
         pairwise(),
-        map((eventPair: Event[]): string | number => {
+        map((eventPair: CustomEvent[]): string | number => {
           const maxEventDelay: number = 1000;
-          const previousEvent: Event = eventPair[0];
-          const currentEvent: Event = eventPair[1];
+          const previousEvent: CustomEvent = eventPair[0];
+          const currentEvent: CustomEvent = eventPair[1];
           const delayFromPreviousEvent: number =
             currentEvent.timeStamp - previousEvent.timeStamp;
 
           return delayFromPreviousEvent > maxEventDelay
             ? 'N/A'
-            : (currentEvent as CustomEvent).detail.airPressure;
+            : currentEvent.detail.airPressure;
         })
       ),
     ]).pipe(debounceTime(minPreviousEmitTime));
