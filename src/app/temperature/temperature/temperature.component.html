@@ -1,5 +1,3 @@
-<div *ngFor="let data of displayObject | async; let i = index">
-  <p *ngIf="i == 0">Температура: {{ data }} &deg;</p>
-  <p *ngIf="i == 1">Влажность: {{ data }} %</p>
-  <p *ngIf="i == 2">Ветер: {{ data }} км/час</p>
-</div>
+<app-display-object
+  [displayObject]="displayObject | async"
+></app-display-object>

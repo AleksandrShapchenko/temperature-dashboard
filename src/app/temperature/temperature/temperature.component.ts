@@ -3,6 +3,7 @@ import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { debounceTime, map, pairwise } from 'rxjs/operators';
 
 import { GenerateDataService } from '../../core/generate-data.service';
+import { DisplayObject } from '../../shared/models/display-object';
 
 @Component({
   selector: 'app-temperature',
@@ -10,9 +11,7 @@ import { GenerateDataService } from '../../core/generate-data.service';
   styleUrls: ['./temperature.component.less'],
 })
 export class TemperatureComponent implements OnInit {
-  public displayObject:
-    | Observable<[string | number, string | number, string | number]>
-    | undefined;
+  public displayObject: Observable<DisplayObject> | undefined;
 
   public constructor(private dataService: GenerateDataService) {}
 
@@ -77,6 +76,17 @@ export class TemperatureComponent implements OnInit {
             : currentEvent.detail.airPressure;
         })
       ),
-    ]).pipe(debounceTime(minPreviousEmitTime));
+    ]).pipe(
+      map(
+        (dataArray: (string | number)[]): DisplayObject => {
+          return {
+            temperature: dataArray[0],
+            humidity: dataArray[1],
+            airPressure: dataArray[2],
+          };
+        }
+      ),
+      debounceTime(minPreviousEmitTime)
+    );
   }
 }
