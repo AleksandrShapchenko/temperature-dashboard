@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TemperatureComponent } from './temperature/temperature/temperature.component';
 
 const routes: Routes = [
   {
@@ -10,7 +9,10 @@ const routes: Routes = [
   },
   {
     path: 'whether',
-    component: TemperatureComponent
+    loadChildren: (): any =>
+      import('./temperature/temperature.module').then(
+        (m: any): any => m.TemperatureModule
+      )
   }
 ];
 
