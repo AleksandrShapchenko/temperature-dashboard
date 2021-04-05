@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DisplayObject } from '../../../shared/models/display-object';
+import { DisplayObject } from '../../shared/models/display-object';
 
 @Component({
   selector: 'app-display-object',

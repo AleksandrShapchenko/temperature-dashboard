@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TemperatureComponent } from './temperature/temperature.component';
-import { DisplayObjectComponent } from './temperature/display-object/display-object.component';
+import { DisplayObjectComponent } from './display-object/display-object.component';
 
 @NgModule({
   declarations: [TemperatureComponent, DisplayObjectComponent],

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
-import { debounceTime, map, pairwise } from 'rxjs/operators';
+import { map, pairwise, throttleTime } from 'rxjs/operators';
 
-import { GenerateDataService } from '../../core/generate-data.service';
 import { DisplayObject } from '../../shared/models/display-object';
+import { GenerateDataService } from '../../core/generate-data.service';
 
 @Component({
   selector: 'app-temperature',
@@ -13,7 +13,7 @@ import { DisplayObject } from '../../shared/models/display-object';
 export class TemperatureComponent implements OnInit {
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor(private dataService: GenerateDataService) {}
+  public constructor(private generateDataService: GenerateDataService) {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
@@ -33,18 +33,24 @@ export class TemperatureComponent implements OnInit {
 
     this.displayObject = combineLatest([
       temperatureEventStream.pipe(
-        pairwise<CustomEvent>(),
-        map(mapDataFromEvent('temperature'))
+        pairwise(),
+        map((eventPair: CustomEvent[]): string | number => {
+          return mapDataFromEvent(eventPair, 'temperature');
+        })
       ),
 
       humidityEventStream.pipe(
         pairwise(),
-        map(mapDataFromEvent('humidity'))
+        map((eventPair: CustomEvent[]): string | number => {
+          return mapDataFromEvent(eventPair, 'humidity');
+        })
       ),
 
       airPressureEventStream.pipe(
         pairwise(),
-        map(mapDataFromEvent('airPressure'))
+        map((eventPair: CustomEvent[]): string | number => {
+          return mapDataFromEvent(eventPair, 'airPressure');
+        })
       ),
     ]).pipe(
       map(
@@ -56,23 +62,22 @@ export class TemperatureComponent implements OnInit {
           };
         }
       ),
-      debounceTime(minPreviousEmitTime)
+      throttleTime(minPreviousEmitTime)
     );
 
     function mapDataFromEvent(
+      eventPair: CustomEvent[],
       propertyName: string
-    ): (eventPair: CustomEvent[]) => string | number {
-      return (eventPair: CustomEvent[]): string | number => {
-        const maxEventDelay: number = 1000;
-        const previousEvent: CustomEvent = eventPair[0];
-        const currentEvent: CustomEvent = eventPair[1];
-        const delayFromPreviousEvent: number =
-          currentEvent.timeStamp - previousEvent.timeStamp;
+    ): string | number {
+      const maxEventDelay: number = 1000;
+      const previousEvent: CustomEvent = eventPair[0];
+      const currentEvent: CustomEvent = eventPair[1];
+      const delayFromPreviousEvent: number =
+        currentEvent.timeStamp - previousEvent.timeStamp;
 
-        return delayFromPreviousEvent > maxEventDelay
-          ? 'N/A'
-          : currentEvent.detail[propertyName];
-      };
+      return delayFromPreviousEvent > maxEventDelay
+        ? 'N/A'
+        : currentEvent.detail[propertyName];
     }
   }
 }
