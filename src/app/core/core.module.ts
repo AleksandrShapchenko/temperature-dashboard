@@ -1,7 +1,10 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { GenerateDataService } from './generate-data.service';
+import {
+  GenerateDataService,
+  generateDataServiceToken
+} from './generate-data.service';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 
@@ -9,7 +12,9 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
   declarations: [],
   imports: [CommonModule],
   exports: [CommonModule],
-  providers: [GenerateDataService]
+  providers: [
+    { provide: generateDataServiceToken, useClass: GenerateDataService }
+  ]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

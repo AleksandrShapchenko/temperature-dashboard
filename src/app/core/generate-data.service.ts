@@ -1,6 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 
 import { Canceller } from '../shared/models/canceller';
+
+export const generateDataServiceToken: InjectionToken<GenerateDataService> = new InjectionToken<GenerateDataService>(
+  'GenerateDataService'
+);
 
 @Injectable()
 export class GenerateDataService {
