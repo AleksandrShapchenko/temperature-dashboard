@@ -6,16 +6,16 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'whether',
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: 'whether',
-    component: TemperatureComponent,
-  },
+    component: TemperatureComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

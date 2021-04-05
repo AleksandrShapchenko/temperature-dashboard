@@ -6,6 +6,6 @@ import { DisplayObjectComponent } from './display-object/display-object.componen
 @NgModule({
   declarations: [TemperatureComponent, DisplayObjectComponent],
   exports: [TemperatureComponent],
-  imports: [CommonModule],
+  imports: [CommonModule]
 })
 export class TemperatureModule {}

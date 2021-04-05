@@ -10,6 +10,6 @@ import { TemperatureModule } from './temperature/temperature.module';
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, CoreModule, TemperatureModule],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

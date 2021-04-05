@@ -9,7 +9,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
   declarations: [],
   imports: [CommonModule],
   exports: [CommonModule],
-  providers: [GenerateDataService],
+  providers: [GenerateDataService]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

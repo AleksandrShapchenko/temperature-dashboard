@@ -3,17 +3,16 @@ import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { map, pairwise, throttleTime } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
-import { GenerateDataService } from '../../core/generate-data.service';
 
 @Component({
   selector: 'app-temperature',
   templateUrl: './temperature.component.html',
-  styleUrls: ['./temperature.component.less'],
+  styleUrls: ['./temperature.component.less']
 })
 export class TemperatureComponent implements OnInit {
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor(private generateDataService: GenerateDataService) {}
+  public constructor() {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
@@ -51,14 +50,14 @@ export class TemperatureComponent implements OnInit {
         map((eventPair: CustomEvent[]): string | number => {
           return mapDataFromEvent(eventPair, 'airPressure');
         })
-      ),
+      )
     ]).pipe(
       map(
         (dataArray: (string | number)[]): DisplayObject => {
           return {
             temperature: dataArray[0],
             humidity: dataArray[1],
-            airPressure: dataArray[2],
+            airPressure: dataArray[2]
           };
         }
       ),

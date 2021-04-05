@@ -19,8 +19,8 @@ export class GenerateDataService {
     document.dispatchEvent(
       new CustomEvent('generateAirPressure', {
         detail: {
-          airPressure: this.airPressure,
-        },
+          airPressure: this.airPressure
+        }
       })
     );
   };
@@ -33,8 +33,8 @@ export class GenerateDataService {
     document.dispatchEvent(
       new CustomEvent('generateHumidity', {
         detail: {
-          humidity: this.humidity,
-        },
+          humidity: this.humidity
+        }
       })
     );
   };
@@ -48,8 +48,8 @@ export class GenerateDataService {
     document.dispatchEvent(
       new CustomEvent('generateTemperature', {
         detail: {
-          temperature: this.temperature,
-        },
+          temperature: this.temperature
+        }
       })
     );
   };
