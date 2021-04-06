@@ -1,12 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { map, pairwise, throttleTime } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
-import {
-  GenerateDataService,
-  generateDataServiceToken
-} from '../../core/generate-data.service';
 
 @Component({
   selector: 'app-temperature',
@@ -16,10 +12,7 @@ import {
 export class TemperatureComponent implements OnInit {
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor(
-    @Inject(generateDataServiceToken)
-    public generateDataService: GenerateDataService
-  ) {}
+  public constructor() {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;

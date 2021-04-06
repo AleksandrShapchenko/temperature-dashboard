@@ -1,12 +1,10 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Canceller } from '../shared/models/canceller';
 
-export const generateDataServiceToken: InjectionToken<GenerateDataService> = new InjectionToken<GenerateDataService>(
-  'GenerateDataService'
-);
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GenerateDataService {
   public airPressure: number = 10;
   public humidity: number = 40;

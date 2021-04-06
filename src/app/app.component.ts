@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public title = 'temperature-dashboard';
+
+  constructor() {
+    console.log('app has been initialized');
+  }
 }
