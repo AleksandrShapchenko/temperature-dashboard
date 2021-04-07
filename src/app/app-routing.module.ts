@@ -13,6 +13,13 @@ const routes: Routes = [
       import('./temperature/temperature.module').then(
         (m: any): any => m.TemperatureModule
       )
+  },
+  {
+    path: 'scrolling',
+    loadChildren: (): any =>
+      import('./scrolling/scrolling.module').then(
+        (m: any): any => m.ScrollingModule
+      )
   }
 ];
 
