@@ -1,0 +1,28 @@
+<div
+  id="viewport"
+  [ngStyle]="{
+    overflow: 'auto',
+    height: viewportHeight + 'px',
+    backgroundColor: 'grey'
+  }"
+>
+  <div
+    [ngStyle]="{
+      overflow: 'hidden',
+      willChange: 'transform',
+      height: totalHeight + 'px',
+      position: 'relative'
+    }"
+  >
+    <div
+      [ngStyle]="{
+        willChange: 'transform',
+        transform: 'translateY(' + offsetY + 'px)'
+      }"
+    >
+      <div *ngFor="let item of visibleItemList" class="item">
+        {{ item }}
+      </div>
+    </div>
+  </div>
+</div>

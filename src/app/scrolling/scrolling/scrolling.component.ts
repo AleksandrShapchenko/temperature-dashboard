@@ -9,8 +9,4 @@ export class ScrollingComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  onContainerScroll(e: Event): void {
-    console.log(e);
-  }
 }
