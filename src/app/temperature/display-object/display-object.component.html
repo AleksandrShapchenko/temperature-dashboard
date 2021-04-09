@@ -1,5 +1,9 @@
-<div *ngIf="displayObject">
+<div *ngIf="displayObject; else loading">
   <p>Temperature: {{ displayObject.temperature }} &deg;</p>
   <p>Humidity: {{ displayObject.humidity }} %</p>
   <p>Air Pressure: {{ displayObject.airPressure }} km/hour</p>
 </div>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>
