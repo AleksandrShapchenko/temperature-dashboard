@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
+import { itemList } from './data/itemList';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
-  private itemList?: string[];
-  constructor() {}
+  private itemList: string[];
+  constructor() {
+    this.itemList = itemList;
+  }
 
-  setItemList(itemsCount: number): void {
-    this.itemList = new Array(itemsCount)
-      .fill(null)
-      .map((_: null, index: number): string => `Item ${index}`);
+  setItemList(newItemList: string[]): void {
+    this.itemList = newItemList;
   }
 
   getItemList(): string[] {

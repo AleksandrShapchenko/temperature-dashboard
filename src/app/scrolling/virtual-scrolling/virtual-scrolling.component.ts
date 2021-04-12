@@ -28,7 +28,7 @@ export class VirtualScrollingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const itemCount: number = 100000;
+    const itemCount: number = this.store.getItemList().length;
     const viewport: Element | null = document.getElementById('viewport');
     const getVisibleNodesCount: (startNode: number) => number = (
       startNode: number
@@ -45,7 +45,6 @@ export class VirtualScrollingComponent implements OnInit {
     let visibleNodesCount: number = getVisibleNodesCount(0);
     this.totalHeight = itemCount * this.childHeight;
 
-    this.store.setItemList(itemCount);
     this.visibleItemList = this.store.getItemList().slice(0, visibleNodesCount);
 
     fromEvent(viewport as FromEventTarget<Event>, 'scroll')

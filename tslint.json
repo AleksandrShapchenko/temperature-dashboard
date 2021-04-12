@@ -4,7 +4,6 @@
   "rules": {
     "no-magic-numbers": [true, -1, 0, 1, 2, 3],
     "no-use-before-declare": false,
-    "file-name-casing": [true, "kebab-case"],
     "no-implicit-dependencies": false,
     "comment-format": [true, "check-space"],
     "newline-per-chained-call": false,
