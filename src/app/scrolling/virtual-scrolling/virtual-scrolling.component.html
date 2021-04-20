@@ -1,14 +1,12 @@
-<div
-  id="viewport"
-  [ngClass]="{ viewport: true }"
-  [style.height.px]="viewportHeight"
->
-  <div [ngClass]="{ 'content-list': true }" [style.height.px]="totalHeight">
-    <div
-      [ngClass]="{ 'shown-content-list': true }"
-      [style.transform]="'translateY(' + offsetY + 'px)'"
-    >
-      <div *ngFor="let item of visibleItemList" class="item">
+<div id="viewport"
+     [ngClass]="{ viewport: true }"
+     [style.height.px]="viewportHeight">
+  <div [ngClass]="{ 'content-list': true }"
+       [style.height.px]="totalHeight">
+    <div [ngClass]="{ 'shown-content-list': true }"
+         [style.transform]="'translateY(' + offsetY + 'px)'">
+      <div *ngFor="let item of visibleItemList"
+           class="item">
         {{ item }}
       </div>
     </div>
