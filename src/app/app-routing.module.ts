@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'whether',
+    redirectTo: 'weather',
     pathMatch: 'full'
   },
   {
-    path: 'whether',
+    path: 'weather',
     loadChildren: (): any =>
       import('./temperature/temperature.module').then(
         (m: any): any => m.TemperatureModule

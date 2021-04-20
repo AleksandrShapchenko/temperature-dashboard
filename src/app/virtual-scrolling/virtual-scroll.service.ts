@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class VirtualScrollService {
   scrollY = new BehaviorSubject(0);
   scrollY$ = this.scrollY.asObservable();

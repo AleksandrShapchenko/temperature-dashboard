@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { VirtualScrollService } from '../../core/virtual-scroll.service';
+import { VirtualScrollService } from '../virtual-scroll.service';
 import { StoreService } from '../../core/store.service';
 import { fromEvent, Subject } from 'rxjs';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
