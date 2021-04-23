@@ -8,6 +8,7 @@ import { StoreService } from '../../core/store.service';
 })
 export class ScrollingComponent implements OnInit {
   public items: string[];
+
   constructor(private store: StoreService) {
     this.items = store.getItemList();
   }
