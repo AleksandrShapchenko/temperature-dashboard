@@ -5,10 +5,8 @@
        [style.height.px]="totalHeight">
     <div [ngClass]="{ 'shown-content-list': true }"
          [style.transform]="'translateY(' + offsetY + 'px)'">
-      <div *ngFor="let item of visibleItemList"
-           class="item">
-        {{ item }}
-      </div>
+      <ng-content>
+      </ng-content>
     </div>
   </div>
 </div>
