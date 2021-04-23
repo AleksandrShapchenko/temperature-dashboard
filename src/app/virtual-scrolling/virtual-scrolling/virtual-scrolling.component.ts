@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { VirtualScrollService } from '../virtual-scroll.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 import { takeUntil } from 'rxjs/operators';
@@ -17,30 +16,20 @@ export class VirtualScrollingComponent implements OnInit {
   private destroy = new Subject();
   private destroy$ = this.destroy.asObservable();
 
-  @Input()
-  public items: string[];
+  @Input() public items: string[];
+  @Input() public viewportHeight: number;
+  @Input() public childHeight: number;
+  @Input() public nodePadding: number;
 
-  @Input()
-  public viewportHeight: number;
-
-  @Input()
-  public childHeight: number;
-
-  @Input()
-  public nodePadding: number;
-
-  @Output()
-  public vsUpdate: EventEmitter<string[]> = new EventEmitter<string[]>();
-
-  constructor(private virtualScroll: VirtualScrollService) {}
+  constructor() {}
 
   ngOnInit(): void {
     const itemCount: number = this.items.length;
     const viewport: Element | null = document.getElementById('viewport');
-    const getVisibleNodesCount: (startNode: number) => number = (
+    const getVisibleNodesCountByStartNode: (startNode: number) => number = (
       startNode: number
     ): number => {
-      return this.virtualScroll.getVisibleNodesCount(
+      return this.getVisibleNodesCount(
         this.viewportHeight,
         this.childHeight,
         this.nodePadding,
@@ -49,7 +38,7 @@ export class VirtualScrollingComponent implements OnInit {
       );
     };
 
-    let visibleNodesCount: number = getVisibleNodesCount(0);
+    let visibleNodesCount: number = getVisibleNodesCountByStartNode(0);
     this.totalHeight = itemCount * this.childHeight;
 
     this.visibleItemList = this.items.slice(0, visibleNodesCount);
@@ -57,35 +46,59 @@ export class VirtualScrollingComponent implements OnInit {
     fromEvent(viewport as FromEventTarget<Event>, 'scroll')
       .pipe(takeUntil(this.destroy$))
       .subscribe((e: Event): void => {
-        this.virtualScroll.scrollY.next(this.getYPosition(e));
-        const scrollY: number = this.virtualScroll.scrollY.value;
+        const scrollY: number = this.getYPosition(e);
 
-        const startNode: number = this.virtualScroll.getStartNode(
+        const startNode: number = this.getStartNode(
           scrollY,
           this.childHeight,
           this.nodePadding
         );
 
-        visibleNodesCount = getVisibleNodesCount(startNode);
+        visibleNodesCount = getVisibleNodesCountByStartNode(startNode);
 
-        this.offsetY = this.virtualScroll.getOffsetY(
-          startNode,
-          this.childHeight
-        );
+        this.offsetY = this.getOffsetY(startNode, this.childHeight);
 
         this.visibleItemList = this.items.slice(
           startNode,
           startNode + visibleNodesCount
         );
-        this.vsUpdate.emit(this.visibleItemList);
       });
-  }
-
-  getYPosition(e: Event): number {
-    return (e.target as Element).scrollTop;
   }
 
   ngOnDestroy(): void {
     this.destroy.next();
+  }
+
+  // Returns scrollTop
+  protected getYPosition(e: Event): number {
+    return (e.target as Element).scrollTop;
+  }
+
+  // Returns number of a first node that will be rendered.
+  protected getStartNode(
+    scrollTop: number,
+    childHeight: number,
+    nodePadding: number
+  ): number {
+    const startNode: number = Math.floor(scrollTop / childHeight) - nodePadding;
+    return Math.max(0, startNode);
+  }
+
+  // Returns count of nodes that will be rendered.
+  protected getVisibleNodesCount(
+    viewportHeight: number,
+    childHeight: number,
+    nodePadding: number,
+    itemCount: number,
+    startNode: number
+  ): number {
+    const visibleNodesCount: number =
+      Math.ceil(viewportHeight / childHeight) + 2 * nodePadding;
+    return Math.min(itemCount - startNode, visibleNodesCount);
+  }
+
+  // Returns height from top of the content to startNode;
+  protected getOffsetY(startNode: number, childHeight: number): number {
+    return startNode * childHeight;
   }
 }
