@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { VirtualScrollService } from '../virtual-scroll.service';
-import { StoreService } from '../../core/store.service';
 import { fromEvent, Subject } from 'rxjs';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 import { takeUntil } from 'rxjs/operators';
@@ -11,24 +10,32 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./virtual-scrolling.component.less']
 })
 export class VirtualScrollingComponent implements OnInit {
-  offsetY: number;
-  totalHeight: number;
-  visibleItemList: string[];
+  public offsetY: number;
+  public totalHeight: number;
+  public visibleItemList: string[];
 
-  destroy = new Subject();
-  destroy$ = this.destroy.asObservable();
+  private destroy = new Subject();
+  private destroy$ = this.destroy.asObservable();
 
-  @Input() viewportHeight: number;
-  @Input() childHeight: number;
-  @Input() nodePadding: number;
+  @Input()
+  public items: string[];
 
-  constructor(
-    private virtualScroll: VirtualScrollService,
-    private store: StoreService
-  ) {}
+  @Input()
+  public viewportHeight: number;
+
+  @Input()
+  public childHeight: number;
+
+  @Input()
+  public nodePadding: number;
+
+  @Output()
+  public vsUpdate: EventEmitter<any[]> = new EventEmitter<any[]>();
+
+  constructor(private virtualScroll: VirtualScrollService) {}
 
   ngOnInit(): void {
-    const itemCount: number = this.store.getItemList().length;
+    const itemCount: number = this.items.length;
     const viewport: Element | null = document.getElementById('viewport');
     const getVisibleNodesCount: (startNode: number) => number = (
       startNode: number
@@ -45,7 +52,7 @@ export class VirtualScrollingComponent implements OnInit {
     let visibleNodesCount: number = getVisibleNodesCount(0);
     this.totalHeight = itemCount * this.childHeight;
 
-    this.visibleItemList = this.store.getItemList().slice(0, visibleNodesCount);
+    this.visibleItemList = this.items.slice(0, visibleNodesCount);
 
     fromEvent(viewport as FromEventTarget<Event>, 'scroll')
       .pipe(takeUntil(this.destroy$))
@@ -66,9 +73,11 @@ export class VirtualScrollingComponent implements OnInit {
           this.childHeight
         );
 
-        this.visibleItemList = this.store
-          .getItemList()
-          .slice(startNode, startNode + visibleNodesCount);
+        this.visibleItemList = this.items.slice(
+          startNode,
+          startNode + visibleNodesCount
+        );
+        this.vsUpdate.emit(this.visibleItemList);
       });
   }
 
