@@ -39,9 +39,9 @@ export class VirtualScrollingComponent implements OnInit {
     };
 
     let visibleNodesCount: number = getVisibleNodesCountByStartNode(0);
-    this.totalHeight = itemCount * this.childHeight;
 
     this.visibleItemList = this.items.slice(0, visibleNodesCount);
+    this.totalHeight = itemCount * this.childHeight;
 
     fromEvent(viewport as FromEventTarget<Event>, 'scroll')
       .pipe(takeUntil(this.destroy$))
