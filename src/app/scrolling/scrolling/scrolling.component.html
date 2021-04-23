@@ -3,7 +3,11 @@
         [routerLink]="['/weather']">
   to weather page
 </button>
-<app-virtual-scrolling [viewportHeight]="600"
+<app-virtual-scrolling #scroll
+                       [viewportHeight]="600"
                        [childHeight]="30"
-                       [nodePadding]="10">
+                       [nodePadding]="10"
+                       id="viewport">
+  <div *ngFor="let item of scroll.visibleItemList"
+       class="item">{{item}}</div>
 </app-virtual-scrolling>
