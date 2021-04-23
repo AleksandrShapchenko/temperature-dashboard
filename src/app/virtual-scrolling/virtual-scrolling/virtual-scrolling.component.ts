@@ -30,7 +30,7 @@ export class VirtualScrollingComponent implements OnInit {
   public nodePadding: number;
 
   @Output()
-  public vsUpdate: EventEmitter<any[]> = new EventEmitter<any[]>();
+  public vsUpdate: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor(private virtualScroll: VirtualScrollService) {}
 
