@@ -1,9 +1,8 @@
 <div id="viewport"
-     [ngClass]="{ viewport: true }"
      [style.height.px]="viewportHeight">
-  <div [ngClass]="{ 'content-list': true }"
+  <div class="content-list"
        [style.height.px]="totalHeight">
-    <div [ngClass]="{ 'shown-content-list': true }"
+    <div class="shown-content-list"
          [style.transform]="'translateY(' + offsetY + 'px)'">
       <ng-content>
       </ng-content>
