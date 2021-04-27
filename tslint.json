@@ -54,6 +54,6 @@
     "quotemark": [true, "single"],
     "no-empty": false,
     "member-ordering": false,
-    "no-console": false
+    "no-console": [true, "log"]
   }
 }
