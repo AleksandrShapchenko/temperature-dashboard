@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2
+} from '@angular/core';
 import { ModalDialogService } from './modal-dialog.service';
 
 @Component({
@@ -8,6 +16,7 @@ import { ModalDialogService } from './modal-dialog.service';
 })
 export class ModalDialogComponent implements OnInit {
   @Input() id: string;
+  @Output() isConfirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
   private readonly element: any;
 
   constructor(
@@ -48,5 +57,12 @@ export class ModalDialogComponent implements OnInit {
   close(): void {
     this.renderer2.setStyle(this.element, 'display', 'none');
     this.renderer2.removeClass(document.body, 'modal-dialog-open');
+    this.isConfirmed.emit(false);
+  }
+
+  confirm(): void {
+    this.renderer2.setStyle(this.element, 'display', 'none');
+    this.renderer2.removeClass(document.body, 'modal-dialog-open');
+    this.isConfirmed.emit(true);
   }
 }

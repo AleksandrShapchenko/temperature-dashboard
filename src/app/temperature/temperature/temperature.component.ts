@@ -81,11 +81,20 @@ export class TemperatureComponent implements OnInit {
     }
   }
 
-  openModal(id: string): void {
+  public openModal(id: string): void {
     this.dialogService.open(id);
   }
 
-  closeModal(id: string): void {
+  public closeModal(id: string): void {
     this.dialogService.close(id);
+  }
+
+  public confirmModal(id: string): void {
+    this.dialogService.confirm(id);
+  }
+
+  public modalConfirmed(e: boolean): void {
+    // logic here
+    // console.log(e)
   }
 }

@@ -23,4 +23,9 @@ export class ModalDialogService {
     const modal: any = this.modals.find((m: any): boolean => m.id === id);
     modal.close();
   }
+
+  public confirm(id: string): void {
+    const modal: any = this.modals.find((m: any): boolean => m.id === id);
+    modal.confirm();
+  }
 }
