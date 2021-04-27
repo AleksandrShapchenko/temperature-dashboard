@@ -8,7 +8,7 @@ import { ModalDialogService } from './modal-dialog.service';
 })
 export class ModalDialogComponent implements OnInit {
   @Input() id: string;
-  private element: any;
+  private readonly element: any;
 
   constructor(
     private dialogService: ModalDialogService,
@@ -16,7 +16,6 @@ export class ModalDialogComponent implements OnInit {
     private renderer2: Renderer2
   ) {
     this.element = el.nativeElement;
-    console.log(el);
   }
 
   ngOnInit(): void {
