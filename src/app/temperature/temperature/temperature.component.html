@@ -3,5 +3,26 @@
         [routerLink]="['/scrolling']">
   to scrolling page
 </button>
+<button class="btn"
+        type="button"
+        (click)="openModal('modal-1')">
+  open modal
+</button>
 <app-display-object [displayObject]="displayObject | async">
 </app-display-object>
+
+<app-modal-dialog [id]="'modal-1'">
+  <div class="modal-dialog-header">
+    <h2 class="modal-dialog-title">Modal Title</h2>
+  </div>
+  <div class="modal-dialog-body">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, cum dicta distinctio ea facilis harum odit
+       provident quidem quod sunt!</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <button (click)="closeModal('modal-1')"
+            class="btn">
+      Close
+    </button>
+  </div>
+</app-modal-dialog>

@@ -3,6 +3,7 @@ import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { map, pairwise, throttleTime } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
+import { ModalDialogService } from '../../modal-dialog';
 
 @Component({
   selector: 'app-temperature',
@@ -12,7 +13,7 @@ import { DisplayObject } from '../../shared/models/display-object';
 export class TemperatureComponent implements OnInit {
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor() {}
+  public constructor(private dialogService: ModalDialogService) {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
@@ -78,5 +79,13 @@ export class TemperatureComponent implements OnInit {
         ? 'N/A'
         : currentEvent.detail[propertyName];
     }
+  }
+
+  openModal(id: string): void {
+    this.dialogService.open(id);
+  }
+
+  closeModal(id: string): void {
+    this.dialogService.close(id);
   }
 }
