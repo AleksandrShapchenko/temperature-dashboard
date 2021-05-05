@@ -2,12 +2,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
   OnInit,
   Output,
   Renderer2
 } from '@angular/core';
-import { ModalDialogService } from './modal-dialog.service';
 
 @Component({
   selector: 'app-modal-dialog',
@@ -15,12 +13,10 @@ import { ModalDialogService } from './modal-dialog.service';
   styleUrls: ['./modal-dialog.component.less']
 })
 export class ModalDialogComponent implements OnInit {
-  @Input() id: string;
-  @Output() isConfirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModalEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   private readonly element: any;
 
   constructor(
-    private dialogService: ModalDialogService,
     private el: ElementRef,
     private renderer2: Renderer2
   ) {
@@ -28,24 +24,16 @@ export class ModalDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.id) {
-      console.error('modal must have an id');
-      return;
-    }
-
     this.renderer2.appendChild(document.body, this.element);
 
     this.renderer2.listen(this.element, 'click', (e: any): void => {
       if (e.target.className === 'modal-dialog') {
-        this.close();
+        this.dismiss();
       }
     });
-
-    this.dialogService.addToOpened(this);
   }
 
   ngOnDestroy(): void {
-    this.dialogService.removeFromOpened(this.id);
     this.renderer2.removeChild(document.body, this.element);
   }
 
@@ -54,15 +42,15 @@ export class ModalDialogComponent implements OnInit {
     this.renderer2.addClass(document.body, 'modal-dialog-open');
   }
 
-  close(): void {
+  dismiss(): void {
     this.renderer2.setStyle(this.element, 'display', 'none');
     this.renderer2.removeClass(document.body, 'modal-dialog-open');
-    this.isConfirmed.emit(false);
+    this.closeModalEvent.emit(false);
   }
 
   confirm(): void {
     this.renderer2.setStyle(this.element, 'display', 'none');
     this.renderer2.removeClass(document.body, 'modal-dialog-open');
-    this.isConfirmed.emit(true);
+    this.closeModalEvent.emit(true);
   }
 }
