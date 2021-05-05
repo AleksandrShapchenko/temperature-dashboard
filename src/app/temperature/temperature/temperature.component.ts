@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { map, pairwise, throttleTime } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
-import { ModalDialogService } from '../../modal-dialog';
+import { ModalDialogComponent } from '../../modal-dialog';
 
 @Component({
   selector: 'app-temperature',
@@ -11,9 +11,10 @@ import { ModalDialogService } from '../../modal-dialog';
   styleUrls: ['./temperature.component.less']
 })
 export class TemperatureComponent implements OnInit {
+  @ViewChild('modal') modal: ModalDialogComponent;
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor(private dialogService: ModalDialogService) {}
+  public constructor() {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
@@ -81,19 +82,7 @@ export class TemperatureComponent implements OnInit {
     }
   }
 
-  public openModal(id: string): void {
-    this.dialogService.open(id);
-  }
-
-  public closeModal(id: string): void {
-    this.dialogService.close(id);
-  }
-
-  public confirmModal(id: string): void {
-    this.dialogService.confirm(id);
-  }
-
-  public modalConfirmed(e: boolean): void {
+  public onModalClosed(e: boolean): void {
     // logic here
     // console.log(e)
   }
