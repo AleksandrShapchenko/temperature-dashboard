@@ -13,13 +13,11 @@ import {
   styleUrls: ['./modal-dialog.component.less']
 })
 export class ModalDialogComponent implements OnInit {
-  @Output() closeModalEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  closeModalEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   private readonly element: any;
 
-  constructor(
-    private el: ElementRef,
-    private renderer2: Renderer2
-  ) {
+  constructor(private el: ElementRef, private renderer2: Renderer2) {
     this.element = el.nativeElement;
   }
 

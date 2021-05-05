@@ -11,7 +11,8 @@
 <app-display-object [displayObject]='displayObject | async'>
 </app-display-object>
 
-<app-modal-dialog (closeModalEvent)='onModalClosed($event)' #modal>
+<app-modal-dialog (closeModalEvent)='onModalClosed($event)'
+                  #modal>
   <div class='modal-dialog-header'>
     <h2 class='modal-dialog-title'>Modal Title</h2>
   </div>
