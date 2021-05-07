@@ -2,7 +2,6 @@
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
-    "no-magic-numbers": [true, -1, 0, 1, 2, 3],
     "no-use-before-declare": false,
     "no-implicit-dependencies": false,
     "comment-format": [true, "check-space"],
@@ -54,6 +53,7 @@
     "quotemark": [true, "single"],
     "no-empty": false,
     "member-ordering": false,
-    "no-console": [true, "log"]
+    "no-console": false,
+    "no-magic-numbers": false
   }
 }
