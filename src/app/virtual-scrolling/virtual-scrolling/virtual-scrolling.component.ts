@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-virtual-scrolling',
@@ -44,7 +44,10 @@ export class VirtualScrollingComponent implements OnInit {
     this.totalHeight = itemCount * this.childHeight;
 
     fromEvent(viewport as FromEventTarget<Event>, 'scroll')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        throttleTime(20),
+      )
       .subscribe((e: Event): void => {
         const scrollY: number = this.getYPosition(e);
 
