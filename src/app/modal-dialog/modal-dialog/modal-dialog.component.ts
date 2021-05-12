@@ -53,7 +53,7 @@ export class ModalDialogComponent implements OnInit, AfterViewInit {
     this.renderer2.removeChild(document.body, this.element);
   }
 
-  open(): void {
+  public open(): void {
     this.display = 'block';
     this.modalDialogService.incrementOpenedModalCount();
     if (!document.body.classList.contains('modal-dialog-open')) {
@@ -62,23 +62,22 @@ export class ModalDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
-  dismiss(): void {
-    this.display = 'none';
-    this.modalDialogService.decrementOpenedModalCount();
-    if (!this.modalDialogService.getOpenedModalCount()) {
-      this.renderer2.removeClass(document.body, 'modal-dialog-open');
-      this.modalDialogBackground.nativeElement.style.display = 'none';
-    }
+  public dismiss(): void {
+    this.closeModalDialog();
     this.closeModalEvent.emit(false);
   }
 
-  confirm(): void {
+  public confirm(): void {
+    this.closeModalDialog();
+    this.closeModalEvent.emit(true);
+  }
+
+  private closeModalDialog(): void {
     this.display = 'none';
     this.modalDialogService.decrementOpenedModalCount();
     if (!this.modalDialogService.getOpenedModalCount()) {
       this.renderer2.removeClass(document.body, 'modal-dialog-open');
       this.modalDialogBackground.nativeElement.style.display = 'none';
     }
-    this.closeModalEvent.emit(true);
   }
 }
