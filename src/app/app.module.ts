@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { TemperatureModule } from './temperature/temperature.module';
 import { GenerateDataService } from './core/generate-data.service';
 import { ScrollingModule } from './scrolling/scrolling.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,7 +14,8 @@ import { ScrollingModule } from './scrolling/scrolling.module';
     BrowserModule,
     AppRoutingModule,
     TemperatureModule,
-    ScrollingModule
+    ScrollingModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {
