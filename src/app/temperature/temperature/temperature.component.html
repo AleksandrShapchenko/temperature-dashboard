@@ -1,32 +1,37 @@
-<button class='btn'
-        type='button'
+<button class="btn"
+        type="button"
         [routerLink]="['/scrolling']">
   to scrolling page
 </button>
-<button class='btn'
-        type='button'
-        (click)='modal.open()'>
+<button class="btn"
+        type="button"
+        (click)="modal.open()">
   open modal
 </button>
-<app-display-object [displayObject]='displayObject | async'>
+<button class="btn"
+        type="button"
+        (click)="openMyDialog($event)">
+  open new modal
+</button>
+<app-display-object [displayObject]="displayObject | async">
 </app-display-object>
 
-<app-modal-dialog (closeModalEvent)='onModalClosed($event)'
+<app-modal-dialog (closeModalEvent)="onModalClosed($event)"
                   #modal>
-  <div class='modal-dialog-header'>
-    <h2 class='modal-dialog-title'>Modal Title</h2>
+  <div class="modal-dialog-header">
+    <h2 class="modal-dialog-title">Modal Title</h2>
   </div>
-  <div class='modal-dialog-body'>
+  <div class="modal-dialog-body">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, cum dicta distinctio ea facilis harum odit
       provident quidem quod sunt!</p>
   </div>
-  <div class='modal-dialog-footer'>
-    <button (click)='modal.dismiss()'
-            class='btn'>
+  <div class="modal-dialog-footer">
+    <button (click)="modal.dismiss()"
+            class="btn">
       Close
     </button>
-    <button (click)='modal.confirm()'
-            class='btn btn-confirm'>
+    <button (click)="modal.confirm()"
+            class="btn btn-confirm">
       Confirm
     </button>
   </div>

@@ -4,6 +4,8 @@ import { map, pairwise, throttleTime } from 'rxjs/operators';
 
 import { DisplayObject } from '../../shared/models/display-object';
 import { ModalDialogComponent } from '../../modal-dialog';
+import { MyDialogRef, MyDialogService } from '../../my-dialog';
+import { MyDialogExampleComponent } from '../my-dialog-example/my-dialog-example.component';
 
 @Component({
   selector: 'app-temperature',
@@ -14,7 +16,7 @@ export class TemperatureComponent implements OnInit {
   @ViewChild('modal') modal: ModalDialogComponent;
   public displayObject: Observable<DisplayObject> | undefined;
 
-  public constructor() {}
+  public constructor(private myDialogService: MyDialogService) {}
 
   public ngOnInit(): void {
     const minPreviousEmitTime: number = 100;
@@ -85,5 +87,19 @@ export class TemperatureComponent implements OnInit {
   public onModalClosed(e: boolean): void {
     // logic here
     // console.log(e)
+  }
+
+  public openMyDialog(e: MouseEvent): void {
+    const myDialogRef: MyDialogRef<any> = this.myDialogService.open(
+      MyDialogExampleComponent,
+      {
+        width: '250px',
+        data: { name: 'Joe' }
+      }
+    );
+
+    myDialogRef.afterClosed().subscribe((result: any): void => {
+      console.log('dialog result: ' + result);
+    });
   }
 }

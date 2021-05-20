@@ -5,15 +5,22 @@ import { DisplayObjectComponent } from './display-object/display-object.componen
 import { TemperatureRoutingModule } from './temperature-routing.module';
 import { RouterModule } from '@angular/router';
 import { ModalDialogModule } from '../modal-dialog';
+import { MyDialogModule } from '../my-dialog';
+import { MyDialogExampleComponent } from './my-dialog-example/my-dialog-example.component';
 
 @NgModule({
-  declarations: [TemperatureComponent, DisplayObjectComponent],
+  declarations: [
+    TemperatureComponent,
+    DisplayObjectComponent,
+    MyDialogExampleComponent
+  ],
   exports: [TemperatureComponent],
   imports: [
     CommonModule,
     TemperatureRoutingModule,
     RouterModule,
-    ModalDialogModule
+    ModalDialogModule,
+    MyDialogModule
   ]
 })
 export class TemperatureModule {}
