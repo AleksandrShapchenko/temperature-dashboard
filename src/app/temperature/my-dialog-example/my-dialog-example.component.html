@@ -1,0 +1,8 @@
+<h1 my-dialog-title>Modal title</h1>
+<div my-dialog-content>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, pariatur.</p>
+</div>
+<div my-dialog-actions>
+  <button class="btn" (click)="onNoClick()">No Thanks</button>
+  <button class="btn btn-confirm" [my-dialog-close]="'Ok'">Ok</button>
+</div>
