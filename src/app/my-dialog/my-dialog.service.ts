@@ -23,8 +23,7 @@ import {
   TemplateRef,
   Type
 } from '@angular/core';
-import { defer, Observable, Subject } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { MyDialogConfig } from './my-dialog-config';
 import { MyDialogContainer } from './my-dialog-container';
 import { MyDialogRef } from './my-dialog-ref';
@@ -40,12 +39,6 @@ export const MY_DIALOG_DEFAULT_OPTIONS: InjectionToken<MyDialogConfig> = new Inj
 @Directive()
 export class MyDialogServiceBase<C extends MyDialogContainer>
   implements OnDestroy {
-  readonly afterAllClosed: Observable<void> = defer(
-    (): Observable<any> =>
-      this.openDialogs.length
-        ? this._getAfterAllClosed()
-        : this._getAfterAllClosed().pipe(startWith(undefined))
-  ) as Observable<any>;
   private _openDialogsAtThisLevel: MyDialogRef<any>[] = [];
   private readonly _afterAllClosedAtThisLevel = new Subject<void>();
   private readonly _afterOpenedAtThisLevel = new Subject<MyDialogRef<any>>();

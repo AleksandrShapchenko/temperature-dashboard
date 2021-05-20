@@ -63,8 +63,6 @@ export class MyDialogContainer extends BasePortalOutlet {
 
   _initializeWithAttachedContent(): void {
     this._setupFocusTrap();
-    // // Move focus onto the dialog immediately in order to prevent the user
-    // // from accidentally opening multiple dialogs at the same time.
     this._focusDialogContainer();
   }
 
