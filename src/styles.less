@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 * {
   box-sizing: border-box;
 }
@@ -7,31 +6,32 @@
   background-color: grey;
   color: #fff;
   padding: 10px;
+  min-width: 45px;
   border: none;
   border-radius: 15px;
   cursor: pointer;
   transition: 0.15s ease-in-out;
   margin-bottom: 20px;
-}
 
-.btn:hover {
-  background-color: lightslategray;
-}
+  &:hover {
+    background-color: lightslategray;
+  }
 
-.btn:focus {
-  outline: none;
-}
+  &:focus {
+    outline: none;
+  }
 
-.btn+.btn {
-  margin-left: 10px;
+  & + & {
+    margin-left: 10px;
+  }
 }
 
 .btn-confirm {
   background-color: darkgreen;
-}
 
-.btn-confirm:hover {
-  background-color: green;
+  &:hover {
+    background-color: green;
+  }
 }
 
 .modal-dialog-header {
@@ -57,4 +57,67 @@
 
 .modal-dialog-title {
   margin: 0;
+}
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 1000;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1;
+}
+.cdk-overlay-dark-backdrop {
+  background: rgba(0,0,0,.32);
+}
+.cdk-overlay-backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .4s cubic-bezier(.25,.8,.25,1);
+  opacity: 0;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-pane {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.cdk-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+  outline: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.cdk-overlay-pane {
+  pointer-events: auto;
 }
